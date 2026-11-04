@@ -1219,3 +1219,13 @@ section[id] { scroll-margin-top: 230px; }
 .bar-logo img { height: 169px; }
 @media (min-width: 1141px) { .bar-logo img { height: 147px; } }
 @media (max-width: 760px) { .bar-logo img { height: 78px; } }
+/* privacy policy page */
+.legal { padding: clamp(36px, 6vw, 80px) 0; }
+.legal-wrap { max-width: 760px; }
+.legal h1 { font: 400 clamp(2.4rem, 5vw, 3.6rem)/1 "Bebas Neue", "Arial Narrow", sans-serif; letter-spacing: .02em; margin: 0 0 8px; }
+.legal-date { color: #5d6666; margin: 0 0 28px; }
+.legal h2 { font-size: 1.15rem; margin: 32px 0 10px; }
+.legal p, .legal li { line-height: 1.6; }
+.legal ul { list-style: disc; padding-left: 1.2em; margin: 0 0 12px; }
+.legal li { margin-bottom: 6px; }
+.footer-fine a { color: inherit; }
