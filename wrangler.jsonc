@@ -9,5 +9,12 @@
     "run_worker_first": ["/api/*"],
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "404-page"
-  }
+  },
+  // Main domain. Visitors to any other domain on this site (davisonmerch.com, www, davlinsupply.com)
+  // are sent here with a permanent (301) redirect. API calls and *.workers.dev are left alone.
+  "vars": {
+    "PRIMARY_HOST": "davlinmerch.com"
+  },
+  // Keep any variables added in the Cloudflare dashboard when GitHub deploys.
+  "keep_vars": true
 }
