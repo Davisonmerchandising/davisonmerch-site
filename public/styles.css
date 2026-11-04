@@ -1290,3 +1290,13 @@ section[id] { scroll-margin-top: 230px; }
   .lp-footer { padding-bottom: 80px; }
   .lp-footer .footer-grid { grid-template-columns: 1fr; }
 }
+/* landing page: style cards with a quote button, and the back bar on style pages */
+.lp-card { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.lp-card .sty-card { flex: 1; }
+.lp-card-quote { min-height: 42px; width: 100%; font-size: .92rem; background: #fff; }
+.lp-sty-sub { margin: -8px 0 18px; }
+.lp-back { background: var(--mint); font-size: .92rem; font-weight: 600; }
+.lp-back .wrap { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-top: 10px; padding-bottom: 10px; }
+.lp-back a { color: #000; }
+.lp-back-cta { text-decoration: none; background: #000; color: #fff !important; padding: 6px 14px; white-space: nowrap; }
+@media (max-width: 760px) { .lp-card-quote { min-height: 38px; font-size: .82rem; padding: 0 8px; } .lp-back .wrap { font-size: .82rem; } }

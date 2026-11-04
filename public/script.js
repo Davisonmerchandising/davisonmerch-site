@@ -600,3 +600,20 @@ window.DSS_REPS = [
     sync();
   });
 })();
+
+/* ---------- visitors from the custom socks landing page: link back, and send quote buttons to its short form ---------- */
+(function () {
+  'use strict';
+  var fromLp = false;
+  try { fromLp = sessionStorage.getItem('davlin_lp') === '1'; } catch (e) {}
+  if (!fromLp || !/\/socks-[a-z]+(\.html)?$/.test(location.pathname)) return;
+  Array.prototype.forEach.call(document.querySelectorAll('a[href^="index.html"][href$="#quote"]'), function (a) {
+    var m = a.getAttribute('href').match(/[?&]style=([^#&]+)/);
+    a.setAttribute('href', 'custom-socks.html' + (m ? '?style=' + m[1] : '') + '#quote');
+  });
+  var bar = document.getElementById('bar'); if (!bar) return;
+  var back = document.createElement('div');
+  back.className = 'lp-back';
+  back.innerHTML = '<div class="wrap"><a href="custom-socks.html#styles">&larr; Back to all custom sock styles</a><a class="lp-back-cta" href="' + (document.querySelector('a[href^="custom-socks.html?style="]') || document.querySelector('a[href^="custom-socks.html"][href$="#quote"]') || { getAttribute: function () { return 'custom-socks.html#quote'; } }).getAttribute('href') + '">Get a free quote</a></div>';
+  bar.parentNode.insertBefore(back, bar.nextSibling);
+})();

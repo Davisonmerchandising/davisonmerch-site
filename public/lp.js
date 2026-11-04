@@ -6,9 +6,14 @@
   function say(t, kind) { msg.textContent = t; msg.className = 'lp-msg lp-wide' + (kind ? ' is-' + kind : ''); }
 
   // clicking a style card picks it in the form
-  Array.prototype.forEach.call(document.querySelectorAll('.sty-card[data-style]'), function (a) {
+  Array.prototype.forEach.call(document.querySelectorAll('[data-style]'), function (a) {
     a.addEventListener('click', function () { styleSel.value = a.getAttribute('data-style'); });
   });
+
+  // remember the visitor came from this page, so style pages can link back
+  try { sessionStorage.setItem('davlin_lp', '1'); } catch (e) {}
+  // ?style=... (from a style page) picks that style
+  try { var ps = new URLSearchParams(location.search).get('style'); if (ps) Array.prototype.forEach.call(styleSel.options, function (o) { if (o.value && ps.toLowerCase().indexOf(o.value.split(' ')[0].toLowerCase()) === 0) styleSel.value = o.value; }); } catch (e) {}
 
   // sticky "Get a free quote" on phones, hidden while the form is on screen
   var sticky = document.getElementById('lp-sticky'), quote = document.getElementById('quote');
