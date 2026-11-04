@@ -1328,3 +1328,21 @@ section[id] { scroll-margin-top: 230px; }
 .lp-trust li { border-left-color: var(--brand-50); }
 .lp-table tr.is-best td { background: var(--brand-20); }
 .btn-solid:hover { background: var(--brand); border-color: var(--brand); }
+/* occasions: PMS 314 tiles, photo revealed on hover */
+.occ-grid { row-gap: clamp(8px, 1.4vw, 18px); }
+.occ-grid article { position: relative; aspect-ratio: 5 / 4; background: var(--brand); overflow: hidden; outline: none; cursor: default; }
+.occ-grid article .ph { position: absolute; inset: 0; margin: 0; opacity: 0; transition: opacity .35s ease; }
+.occ-grid article .ph img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.04); transition: transform .6s ease; }
+.occ-grid h3 { position: absolute; left: clamp(12px, 1.6vw, 22px); bottom: clamp(12px, 1.6vw, 22px); right: auto; margin: 0; z-index: 1; color: #fff; font: 400 clamp(1.6rem, 2.6vw, 2.3rem)/1 "Bebas Neue", "Arial Narrow", sans-serif; letter-spacing: .02em; padding: 10px 14px 7px; background: transparent; transition: background .3s ease, color .3s ease, box-shadow .3s ease; }
+.occ-grid article:hover .ph, .occ-grid article:focus-visible .ph { opacity: 1; }
+.occ-grid article:hover .ph img, .occ-grid article:focus-visible .ph img { transform: scale(1); }
+.occ-grid article:hover h3, .occ-grid article:focus-visible h3 { background: #fff; color: #000; box-shadow: 0 4px 16px rgba(0,0,0,.18); }
+.occ-grid article:focus-visible { box-shadow: inset 0 0 0 3px #000; }
+/* phones and tablets have no hover: show the photo with the white label */
+@media (hover: none) {
+  .occ-grid article .ph { opacity: 1; }
+  .occ-grid article .ph img { transform: none; }
+  .occ-grid h3 { background: #fff; color: #000; font-size: 1.35rem; padding: 7px 10px 4px; }
+}
+.occ-grid article .ph { height: 100%; aspect-ratio: auto; }
+@media (max-width: 760px) { .occ-grid h3 { font-size: 1.15rem; left: 8px; bottom: 8px; padding: 6px 8px 3px; } }
