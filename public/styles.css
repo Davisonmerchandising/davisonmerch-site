@@ -1214,3 +1214,4 @@ section[id] { scroll-margin-top: 230px; }
   .util-row { overflow-x: auto; scrollbar-width: none; justify-content: flex-start; gap: 16px; }
   .util-row::-webkit-scrollbar { display: none; }
 }
+.price-cat img, .price-cat.is-on img { background: transparent; mix-blend-mode: normal; object-fit: contain; }
