@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Production Order Payment | Davison</title>
+<meta name="description" content="Pay in full for your approved Davison production order.">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://davisonmerch.com/pay">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Davison Premium Merchandise Supply">
+<meta property="og:title" content="Production Order Payment | Davison">
+<meta property="og:description" content="Pay in full for your approved Davison production order.">
+<meta property="og:url" content="https://davisonmerch.com/pay">
+<meta property="og:image" content="https://davisonmerch.com/images/photos/models-cotton.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="images/logo.png">
+<link rel="stylesheet" href="styles.css">
+<style>
+.pay-page { background: #fff; color: #000; }
+.pay-head { padding: clamp(36px, 6vw, 72px) 0 clamp(18px, 3vw, 30px); }
+.pay-eyebrow { font-weight: 700; font-size: .8rem; letter-spacing: .2em; text-transform: uppercase; color: #2f6f6c; }
+.pay-head h1 { font: 400 clamp(2.8rem, 6vw, 4.8rem)/.92 "Bebas Neue", "Arial Narrow", sans-serif; margin-top: 10px; }
+.pay-h1-line { display: block; }
+.pay-lede { margin-top: 14px; max-width: 54ch; font-size: 1.1rem; font-weight: 300; line-height: 1.45; }
+.pay-flash { margin-top: 18px; padding: 14px 16px; border: 2px solid #000; font-weight: 600; max-width: 720px; }
+.pay-flash.ok { background: #c2e4e3; } .pay-flash.warn { background: #fff3f2; border-color: #b3231f; }
+.pay-flash[hidden] { display: none; }
+.pay { padding-bottom: clamp(56px, 8vw, 110px); }
+#pay-form { padding: 0; }
+.pay-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .9fr); gap: clamp(24px, 4vw, 56px); align-items: start; }
+.pay-step { border: 0; padding: 18px 0 26px; margin: 0; min-width: 0; }
+.pay-step legend { font: 400 2.04rem/1 "Bebas Neue", "Arial Narrow", sans-serif; letter-spacing: .02em; padding: 0 0 12px; }
+.pay-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.pay-row-1 { grid-template-columns: 1fr; }
+.pay-row-3 { grid-template-columns: 1.4fr 1fr 1fr; }
+.pay-sub { font-weight: 700; font-size: .8rem; letter-spacing: .14em; text-transform: uppercase; margin: 18px 0 10px; padding-top: 16px; border-top: 1px solid #d9dede; }
+.pay-field { display: grid; gap: 6px; font-weight: 700; font-size: .92rem; min-width: 0; }
+.pay-field input, .pay-field select { border: 2px solid #000; padding: 10px 12px; font: inherit; font-weight: 400; width: 100%; border-radius: 0; background: #fff; color: #000; min-height: 48px; }
+.pay-field small, .pay-help { font-weight: 300; font-size: .86rem; }
+.pay-step .heights { margin: 4px 0 0; padding: 0; border: 0; }
+.pay-step .heights legend { font-family: inherit; font-size: .92rem; font-weight: 700; line-height: 1.2; letter-spacing: 0; padding: 0 0 6px; }
+.pay-file { display: block; border: 2px dashed #000; padding: 22px 16px; text-align: center; cursor: pointer; font-weight: 700; position: relative; }
+.pay-file input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
+.pay-file small { display: block; font-weight: 300; margin-top: 6px; }
+.pay-file em { display: block; font-style: normal; margin-top: 10px; color: #2f6f6c; word-break: break-all; }
+.pay-file.is-over { background: #eaf5f4; }
+.bad { border-color: #b3231f !important; background: #fff3f2 !important; }
+.pay-sum { position: sticky; top: 140px; border: 2px solid #000; padding: clamp(18px, 2.4vw, 28px); background: #fff; }
+.pay-sum h2 { font: 400 1.9rem/1 "Bebas Neue", "Arial Narrow", sans-serif; }
+.pay-tag { display: inline-block; margin-top: 8px; background: #000; color: #fff; font-weight: 700; font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; padding: 5px 8px; }
+.pay-sum dl { margin: 16px 0 0; }
+.pay-sum dl div { display: flex; justify-content: space-between; gap: 14px; padding: 10px 0; border-bottom: 1px solid #d9dede; }
+.pay-sum dt { font-weight: 300; } .pay-sum dd { margin: 0; font-weight: 700; text-align: right; word-break: break-word; }
+.pay-total { display: flex; justify-content: space-between; align-items: baseline; padding: 16px 0 6px; }
+.pay-total span { font-weight: 700; } .pay-total b { font: 400 2.6rem/1 "Bebas Neue", "Arial Narrow", sans-serif; }
+.pay-note { font-size: .9rem; font-weight: 300; line-height: 1.45; margin-top: 6px; }
+.pay-agree { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start; margin-top: 16px; font-size: .92rem; line-height: 1.4; cursor: pointer; }
+.pay-agree input { width: 20px; height: 20px; margin: 1px 0 0; accent-color: #000; }
+.pay-btn { width: 100%; min-height: 58px; margin-top: 16px; font-size: 1.05rem; letter-spacing: .06em; text-transform: uppercase; }
+.pay-btn[disabled] { opacity: .45; cursor: not-allowed; }
+.pay-fine { font-size: .82rem; font-weight: 300; margin-top: 10px; line-height: 1.4; }
+.pay-msg { margin-top: 10px; font-weight: 600; } .pay-msg.err { color: #b3231f; }
+.pay-co[hidden], #pay-form[hidden] { display: none; }
+.pay-co { max-width: 760px; margin: 0 auto; border-top: 2px solid #000; padding-top: 18px; }
+.pay-co-head { display: flex; justify-content: space-between; align-items: start; gap: 16px; margin-bottom: 18px; flex-wrap: wrap; }
+.pay-co-step { font: 400 2.04rem/1 "Bebas Neue", "Arial Narrow", sans-serif; letter-spacing: .02em; }
+.pay-co-sum { margin-top: 8px; font-weight: 600; line-height: 1.45; }
+.pay-co-mount { min-height: 360px; }
+.pay-co-note { font-weight: 300; margin: -6px 0 16px; padding: 10px 14px; background: #eaf5f4; }
+.pay-co-load { font-weight: 300; padding: 24px 0; }
+@media (max-width: 900px) { .pay-grid { grid-template-columns: 1fr; } .pay-sum { position: static; } }
+@media (max-width: 560px) { .pay-row, .pay-row-3 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#top">Skip to content</a>
+<div class="announce" id="announce" aria-label="Key facts">
+  <span class="is-on">100 pair minimum</span><span>Digital proof before production</span><span>4&ndash;6 week production</span><span>Full service design help</span><span>Free shipping</span>
+</div>
+<div class="band" aria-hidden="true"><span></span><i></i></div>
+
+<header class="bar" id="bar">
+  <nav class="util" aria-label="Company"><div class="wrap util-row"><a href="about.html">About</a><a href="distributors.html">Distributors</a><a href="pay.html" aria-current="page">Make payment</a><a href="talk.html">Contact</a></div></nav>
+  <div class="wrap bar-row">
+    <a class="bar-logo" href="index.html#top" aria-label="Davison Premium Merchandise Supply, back to top"><img src="images/logo.png" alt="Davison Premium Merchandise Supply" width="640" height="424"></a>
+    <button class="bar-toggle" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a class="nav-right" href="index.html#how-it-works">How it works</a>
+      <div class="drop">
+        <button type="button" class="drop-btn" aria-expanded="false" aria-controls="drop-socks">Products</button>
+        <div class="drop-menu" id="drop-socks">
+          <span class="drop-label">Socks</span>
+          <a href="socks-cotton.html">Premium cotton</a>
+          <a href="socks-performance.html">Performance</a>
+          <a href="socks-merino.html">Merino wool blend</a>
+          <a href="socks-dress.html">Dress 200 needle</a>
+          <a href="socks-sublimation.html">Sublimation print</a>
+          <a href="socks-dtg.html">DTG print</a>
+          <span class="drop-label">Knits</span>
+          <a href="knits.html">Knit beanies</a>
+          <span class="drop-label">Apparel</span>
+          <a href="apparel.html">Apparel</a>
+        </div>
+      </div>
+      <a href="index.html#pricing">Pricing</a>
+      <a href="index.html#faq">FAQs</a>
+      <a class="btn btn-solid" href="index.html#quote">Get a quote</a>
+    </nav>
+  </div>
+  <nav class="catbar" aria-label="Product categories"><div class="wrap catbar-row"><a href="index.html#socks">Socks</a><a href="knits.html">Knit beanies</a><a href="apparel.html">Apparel</a><a href="index.html#retail-finishing">Retail finishing</a><a href="design.html">Design packages</a></div></nav>
+</header>
+
+<main id="top" class="pay-page">
+  <section class="pay-head"><div class="wrap">
+    <p class="pay-eyebrow">Make payment</p>
+    <h1><span class="pay-h1-line">Upload your design</span><span class="pay-h1-line">Production order payment</span></h1>
+    <p class="pay-flash ok" id="pay-flash-ok" hidden></p>
+    <p class="pay-flash warn" id="pay-flash-warn" hidden>Payment canceled. Nothing was charged.</p>
+  </div></section>
+
+  <section class="pay"><div class="wrap">
+   <form class="pay-grid" name="payment" id="pay-form" method="POST" action="/.netlify/functions/create-checkout" enctype="multipart/form-data" novalidate>
+    <p class="hp"><label>Leave this empty <input name="website" tabindex="-1" autocomplete="off"></label></p>
+    <input type="hidden" name="payment-ref" id="p-ref">
+    <input type="hidden" name="price-per-pair" id="p-unit-in">
+    <input type="hidden" name="total" id="p-total-in">
+
+    <div>
+      <fieldset class="pay-step">
+        <legend>1. Your order</legend>
+        <div class="pay-row pay-row-1">
+          <label class="pay-field">Product
+            <select name="product" id="p-product" required></select>
+          </label>
+        </div>
+        <div class="pay-row">
+          <label class="pay-field"><span id="p-style-lbl">Sock model</span>
+            <select name="style" id="p-style" required></select>
+          </label>
+          <label class="pay-field"><span id="p-qty-lbl">Number of pairs</span>
+            <input type="number" name="pairs" id="p-pairs" min="100" max="4999" step="1" value="100" inputmode="numeric" required>
+            <small id="p-qty-hint">100 to 4,999 pairs</small>
+          </label>
+        </div>
+        <input type="hidden" name="height" id="p-height-in" value="Crew">
+        <div class="pay-row" style="margin-top:14px">
+          <label class="pay-field"><span>Quote or proof number <span class="pay-help">optional</span></span>
+            <input name="quote-number" id="p-quote" autocomplete="off" placeholder="From your proof email">
+          </label>
+        </div>
+        <div class="pay-row pay-row-1" style="margin-top:14px">
+          <div class="rep-pick" data-rep>
+            <label class="pay-field"><span class="lbl">Sales rep <span class="opt">optional</span></span>
+              <select class="rep-sel" aria-describedby="p-rep-hint"><option value="">No sales rep (ordering direct)</option></select>
+            </label>
+            <label class="rep-other pay-field" hidden><span class="lbl">Rep initials and number</span>
+              <input class="rep-txt" autocomplete="off" placeholder="For example, CW - 005" maxlength="60">
+            </label>
+            <input type="hidden" name="rep" class="rep-val">
+            <small id="p-rep-hint">Independent reps: choose your name so the order is credited to you.</small>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="pay-step">
+        <legend>2. Your approved artwork</legend>
+        <label class="pay-file" id="p-drop">Upload the art file for this order
+          <small>AI, PDF, EPS, SVG, PNG or JPG, up to 5 MB. It is saved with your payment.</small>
+          <input type="file" name="artwork" id="p-art" accept=".ai,.pdf,.eps,.svg,.png,.jpg,.jpeg" required>
+          <em id="p-art-name"></em>
+        </label>
+      </fieldset>
+
+      <fieldset class="pay-step">
+        <legend>3. Your details</legend>
+        <div class="pay-row">
+          <label class="pay-field">Name <input name="name" id="p-name" required autocomplete="name"></label>
+          <label class="pay-field">Company or team <input name="company" id="p-company" required autocomplete="organization"></label>
+        </div>
+        <div class="pay-row">
+          <label class="pay-field">Email <input type="email" name="email" id="p-email" required autocomplete="email"><small>Your receipt goes here.</small></label>
+          <label class="pay-field"><span>Phone <span class="pay-help">optional</span></span> <input type="tel" name="phone" autocomplete="tel"></label>
+        </div>
+        <p class="pay-sub">Ship to address</p>
+        <div class="pay-row">
+          <label class="pay-field">Ship to name or attention <input name="ship-name" id="p-ship-name" required autocomplete="shipping name"></label>
+          <label class="pay-field"><span>Company <span class="pay-help">optional</span></span> <input name="ship-company" autocomplete="shipping organization"></label>
+        </div>
+        <div class="pay-row pay-row-1">
+          <label class="pay-field">Street address <input name="ship-address1" required autocomplete="shipping address-line1"></label>
+        </div>
+        <div class="pay-row pay-row-1">
+          <label class="pay-field"><span>Suite, unit or floor <span class="pay-help">optional</span></span> <input name="ship-address2" autocomplete="shipping address-line2"></label>
+        </div>
+        <div class="pay-row pay-row-3">
+          <label class="pay-field">City <input name="ship-city" required autocomplete="shipping address-level2"></label>
+          <label class="pay-field">State <input name="ship-state" required autocomplete="shipping address-level1"></label>
+          <label class="pay-field">ZIP code <input name="ship-zip" required autocomplete="shipping postal-code" inputmode="numeric"></label>
+        </div>
+        <div class="pay-row pay-row-1">
+          <label class="pay-field">Country <input name="ship-country" required autocomplete="shipping country-name" value="United States"></label>
+        </div>
+      </fieldset>
+    </div>
+
+    <aside class="pay-sum" aria-labelledby="pay-sum-h">
+      <h2 id="pay-sum-h">Payment summary</h2>
+      <span class="pay-tag">Full production payment</span>
+      <dl>
+        <div><dt>Product</dt><dd id="s-product">Socks</dd></div>
+        <div><dt id="s-model-lbl">Sock model</dt><dd id="s-model">Select a model</dd></div>
+        <div id="s-height-row"><dt>Height</dt><dd id="s-height">Crew</dd></div>
+        <div><dt id="s-qty-lbl">Pairs</dt><dd id="s-pairs">100</dd></div>
+        <div><dt id="s-unit-lbl">Price per pair</dt><dd id="s-unit">&ndash;</dd></div>
+        <div><dt>Art file</dt><dd id="s-art">None yet</dd></div>
+        <div><dt>Sales rep</dt><dd id="s-rep">Direct</dd></div>
+        <div><dt>Shipping</dt><dd>Free</dd></div>
+      </dl>
+      <div class="pay-total"><span>Total to pay</span><b id="s-total">&ndash;</b></div>
+      <p class="pay-note">This pays for full production of this order, in one payment, with free shipping. It is not a deposit.</p>
+      <label class="pay-agree"><input type="checkbox" id="p-agree" name="approved-proof" value="yes" required><span>I approved my proof and understand this payment is for full production of the order above.</span></label>
+      <button class="btn btn-solid pay-btn" type="submit" id="p-btn" disabled>Pay with card</button>
+      <p class="pay-note">Questions about your order? Email <a href="mailto:sales@davisonmerch.com">sales@davisonmerch.com</a></p>
+      <p class="pay-msg" id="p-msg" role="status" aria-live="polite"></p>
+      <p class="pay-fine">Pay securely right on this page by card, bank account (ACH), Apple Pay or Google Pay. Payments are processed by Stripe. We never see your card number. Discount codes are applied on the next step. Ordering more than the online maximum? Your sales rep will send a custom invoice.</p>
+    </aside>
+   </form>
+   <div class="pay-co" id="pay-co" hidden>
+     <div class="pay-co-head">
+       <div><p class="pay-co-step">4. Secure payment</p><p class="pay-co-sum" id="pay-co-sum"></p></div>
+       <button type="button" class="btn btn-line" id="pay-co-back">Change order</button>
+     </div>
+     <p class="pay-co-note">Have a discount code? Enter it in the payment form below and your total updates before you pay.</p>
+     <div id="pay-co-mount" class="pay-co-mount"><p class="pay-co-load">Loading secure payment&hellip;</p></div>
+   </div>
+  </div></section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <a class="footer-logo" href="index.html#top" aria-label="Davison Premium Merchandise Supply, back to top"><img src="images/logo-white.png" alt="Davison Premium Merchandise Supply" width="640" height="424"></a>
+    <nav aria-label="Products"><h4>Products</h4><a href="socks-cotton.html">Cotton socks</a><a href="socks-performance.html">Performance socks</a><a href="socks-merino.html">Merino wool blend socks</a><a href="socks-dress.html">Dress socks 200 needle</a><a href="socks-sublimation.html">Sublimation print socks</a><a href="socks-dtg.html">DTG print socks</a><a href="knits.html">Knit beanies</a><a href="apparel.html">Apparel</a></nav>
+    <nav aria-label="Customize"><h4>Customize</h4><a href="design.html">Design packages</a><a href="index.html#quote">Tech pack template</a><a href="index.html#retail-finishing">Retail finishing</a></nav>
+    <nav aria-label="Resources"><h4>Resources</h4><a href="index.html#how-it-works">How it works</a><a href="index.html#pricing">Pricing</a><a href="index.html#faq">FAQs</a><a href="about.html">About</a><a href="distributors.html">Distributors</a><a href="pay.html">Make payment</a></nav>
+    <nav aria-label="Contact us"><h4>Contact us</h4><a href="talk.html">Talk to sales</a><a href="mailto:sales@davisonmerch.com">sales@davisonmerch.com</a></nav>
+    <p class="footer-fine">&copy; <span id="year">2026</span> Davison Merchandising Supply</p>
+  </div>
+</footer>
+<script src="script.js"></script>
+<script src="pay.js"></script>
+</body>
+</html>
