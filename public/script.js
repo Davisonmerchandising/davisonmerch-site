@@ -8,7 +8,7 @@ window.DSS_UNIT_PRICE = function (product, model, qty) {
   if (m.price != null) return m.price;
   var p = c.tiers[0][1]; c.tiers.forEach(function (t) { if (qty >= t[0]) p = t[1]; });
   p += m.extra || 0;
-  if (c.small && qty < c.small.below) p *= c.small.mult; // small runs (60-99 pairs) cost 120% of the 100-pair price
+  if (c.small && qty < c.small.below) p = Math.floor(p * c.small.mult * 2) / 2; // small runs (60-99 pairs): 120% of the 100-pair price, rounded down to the nearest $0.50
   return Math.round(p * 100) / 100;
 };
 window.AP_BLANKS = window.DSS_CATALOG.apparel.models.map(function (m) { return { cat: m.group, label: m.name, price: m.price }; });
@@ -144,7 +144,7 @@ window.AP_BLANKS = window.DSS_CATALOG.apparel.models.map(function (m) { return {
   var C = window.DSS_CATALOG;
   var range = document.getElementById('calc-range'), num = document.getElementById('calc-num');
   if (!range) return;
-  var V = '?v=20261104g';
+  var V = '?v=20261104i';
   var SOCK_PHOTO = { cotton: 'photos/cotton-1.jpg', performance: 'photos/performance-1.jpg', merino: 'photos/merino-1.jpg', dress: 'photos/dress-1.jpg', sublimation: 'photos/sublimation-1.jpg', dtg: 'photos/dtg-2.jpg' };
   var SOCK_TAB = { cotton: 'Premium Cotton', performance: 'Performance', merino: 'Merino Wool Blend', dress: 'Dress 200 needle', sublimation: 'Sublimation Print', dtg: 'DTG Print' };
   var KNIT_PHOTO = { beanie: 'knits/cuffed.jpg', skullcap: 'knits/skullcap.jpg', pom: 'knits/pom.jpg' };

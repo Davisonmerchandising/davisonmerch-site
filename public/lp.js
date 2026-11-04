@@ -18,7 +18,7 @@
     dtg: { name: 'DTG Print', label: 'DTG print crew socks', extra: 0 }
   };
   var tabs = document.getElementById('lp-tabs'), tbody = document.getElementById('lp-tiers');
-  function price(m, q) { var p = BASE[q < 100 ? 100 : q] + m.extra; if (q < 100) p *= 1.2; return '$' + p.toFixed(2); }
+  function price(m, q) { var p = BASE[q < 100 ? 100 : q] + m.extra; if (q < 100) p = Math.floor(p * 1.2 * 2) / 2; /* 60-99 pairs: rounded down to the nearest $0.50 */ return '$' + p.toFixed(2); }
   function showModel(id) {
     var m = MODELS[id]; if (!m || !tbody) return;
     tbody.innerHTML = TIERS.map(function (t, i) { return '<tr' + (i === TIERS.length - 1 ? ' class="is-best"' : '') + '><td>' + t[1] + '</td><td>' + price(m, t[0]) + '</td></tr>'; }).join('');

@@ -35,7 +35,7 @@ function unitCents(product, model, qty) {
   let price = c.tiers[0][1];
   for (const [min, p] of c.tiers) if (qty >= min) price = p;
   price += m.extra || 0;
-  if (c.small && qty < c.small.below) price *= c.small.mult; // small runs (60-99 pairs): 120% of the 100-pair price
+  if (c.small && qty < c.small.below) price = Math.floor(price * c.small.mult * 2) / 2; // small runs (60-99 pairs): 120% of the 100-pair price, rounded down to the nearest $0.50
   return Math.round(price * 100);
 }
 function newRef() {
