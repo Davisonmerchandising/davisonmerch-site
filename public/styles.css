@@ -1300,3 +1300,17 @@ section[id] { scroll-margin-top: 230px; }
 .lp-back a { color: #000; }
 .lp-back-cta { text-decoration: none; background: #000; color: #fff !important; padding: 6px 14px; white-space: nowrap; }
 @media (max-width: 760px) { .lp-card-quote { min-height: 38px; font-size: .82rem; padding: 0 8px; } .lp-back .wrap { font-size: .82rem; } }
+/* landing page: drag and drop upload */
+.lp-file { display: grid; gap: 6px; min-width: 0; }
+.lp-file-label { font-weight: 600; font-size: .95rem; }
+.lp-file-label small { font-weight: 400; color: #5d6666; }
+.lp-form .lp-drop { position: relative; display: grid; justify-items: center; gap: 4px; text-align: center; padding: 22px 16px; border: 2px dashed #8a9494; background: #f6faf9; cursor: pointer; transition: border-color .15s, background .15s; font-weight: 400; }
+.lp-drop input[type=file] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.lp-drop svg { color: #2f6f6c; }
+.lp-drop b { font-size: 1rem; }
+.lp-drop span { font-size: .92rem; }
+.lp-drop small { font-size: .8rem; color: #5d6666; }
+.lp-drop:hover, .lp-drop.is-over, .lp-drop:focus-within { border-color: #000; background: var(--mint); }
+.lp-drop.has-files { border-style: solid; border-color: #2f6f6c; }
+.lp-files { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; font-size: .9rem; font-weight: 600; }
+.lp-files li::before { content: "\2713"; color: #2f6f6c; margin-right: 8px; }

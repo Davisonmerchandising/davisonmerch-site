@@ -10,6 +10,21 @@
     a.addEventListener('click', function () { styleSel.value = a.getAttribute('data-style'); });
   });
 
+
+  // drag and drop logo upload
+  var drop = document.getElementById('lp-drop'), list = document.getElementById('lp-files'), fileIn = form.artwork;
+  function showFiles() {
+    var fl = Array.prototype.slice.call(fileIn.files || []);
+    list.innerHTML = '';
+    fl.forEach(function (f) { var li = document.createElement('li'); li.textContent = f.name + ' (' + Math.max(1, Math.round(f.size / 1024)) + ' KB)'; list.appendChild(li); });
+    drop.classList.toggle('has-files', fl.length > 0);
+  }
+  if (drop) {
+    ['dragenter', 'dragover'].forEach(function (t) { drop.addEventListener(t, function () { drop.classList.add('is-over'); }); });
+    ['dragleave', 'drop'].forEach(function (t) { drop.addEventListener(t, function () { drop.classList.remove('is-over'); }); });
+    fileIn.addEventListener('change', showFiles);
+  }
+
   // remember the visitor came from this page, so style pages can link back
   try { sessionStorage.setItem('davlin_lp', '1'); } catch (e) {}
   // ?style=... (from a style page) picks that style
