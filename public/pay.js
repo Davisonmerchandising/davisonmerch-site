@@ -1,5 +1,5 @@
 /* Make payment page. Prices come from script.js (window.DSS_PRICING).
-   The server function (netlify/functions/create-checkout.mjs) recalculates the price itself,
+   The server (src/worker.js) recalculates the price itself,
    so the amount charged never depends on what the browser sends. */
 (function () {
   'use strict';
@@ -92,7 +92,7 @@
     btn.disabled = true; say('Saving your order and opening secure checkout…');
     var fd = new FormData(form);
     fd.set('product', s.product); fd.set('style', s.type); fd.set('pairs', String(s.q)); fd.set('height', s.cat.crew ? 'Crew' : '');
-    fetch('/.netlify/functions/create-checkout', { method: 'POST', body: fd })
+    fetch('/api/create-checkout', { method: 'POST', body: fd })
       .then(function (r) { return r.json().then(function (j) { if (!r.ok || !j.clientSecret) throw new Error(j.error || 'checkout ' + r.status); return j; }); })
       .then(function (j) { return openCheckout(j, s); })
       .catch(function (err) { btn.disabled = false; msg.dataset.keep = '1'; say((err && err.message && err.message.indexOf('checkout') !== 0 && err.message !== 'Failed to fetch' ? err.message + '. ' : '') + 'Payment could not start. Please try again, or email sales@davisonmerch.com and we will send you a payment link.', 'err'); delete msg.dataset.keep; });

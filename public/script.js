@@ -120,23 +120,16 @@ window.AP_BLANKS = window.DSS_CATALOG.apparel.models.map(function (m) { return {
   $('#qf-send').addEventListener('click', function () {
     var btn = this, file = form.artwork.files[0];
     btn.disabled = true; say('Sending your quote request…');
-    // 1) quote-request function (emails sales@ with the file attached)
-    // 2) Netlify Forms, when hosted on Netlify without functions
-    // 3) otherwise open the customer's email app, filled in, so no request is lost
+    // 1) /api/quote-request emails sales@ with the files attached
+    // 2) if that is not set up, open the customer's email app, filled in, so no request is lost
     function emailFallback() {
       var body = rows().map(function (r) { return r[0] + ': ' + r[1]; }).join('\n') + (file ? '\n\nI will attach my art file (' + file.name + ') to this email.' : '');
       var subject = 'QUOTE REQUEST: ' + g('company') + ' - ' + g('project') + ' - ' + g('quantity') + ' ' + (window.dssUnit ? window.dssUnit() : 'pairs');
       window.location.href = 'mailto:sales@davisonmerch.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
       say('Your email app is opening with your quote request filled in.' + (file ? ' Attach your art file and press send.' : ' Press send to finish.'), 'ok');
     }
-    fetch('/.netlify/functions/quote-request', { method: 'POST', body: new FormData(form) })
-      .then(function (r) {
-        if (r.ok) return done();
-        if (r.status !== 404 && r.status !== 405) throw new Error(r.status);
-        return fetch('/', { method: 'POST', body: new FormData(form) }).then(function (r2) {
-          if (r2.ok && r2.headers.get('x-nf-request-id')) done(); else emailFallback();
-        });
-      })
+    fetch('/api/quote-request', { method: 'POST', body: new FormData(form) })
+      .then(function (r) { if (r.ok) done(); else emailFallback(); })
       .catch(function () { emailFallback(); })
       .then(function () { btn.disabled = false; });
   });
@@ -410,9 +403,9 @@ window.AP_BLANKS = window.DSS_CATALOG.apparel.models.map(function (m) { return {
     var fl = files(), total = fl.reduce(function (n, f) { return n + f.size; }, 0);
     if (total > 10 * 1024 * 1024) { say('Your files are over 10 MB in total. Remove some or email them to sales@davisonmerch.com.', 'err'); return; }
     btn.disabled = true; say('Sending\u2026');
-    fetch('/', { method: 'POST', body: new FormData(form) })
+    fetch('/api/quote-request', { method: 'POST', body: new FormData(form) })
       .then(function (r) {
-        if (r.ok && r.headers.get('x-nf-request-id')) { form.reset(); picked = []; sync(); say('Message sent. Our customer service team will get back to you shortly.', 'ok'); }
+        if (r.ok) { form.reset(); picked = []; sync(); say('Message sent. Our customer service team will get back to you shortly.', 'ok'); }
         else emailFallback(fl);
       })
       .catch(function () { emailFallback(fl); })
