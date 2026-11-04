@@ -118,7 +118,7 @@ window.AP_BLANKS = window.DSS_CATALOG.apparel.models.map(function (m) { return {
   });
   $('#qf-edit').addEventListener('click', function () { review.hidden = true; fieldsBox.hidden = false; say(''); });
 
-  function done() { form.reset(); review.hidden = true; fieldsBox.hidden = false; say('Quote request sent. Our customer service team will get back to you shortly.', 'ok'); }
+  function done() { if (window.davlinLead) window.davlinLead(); form.reset(); review.hidden = true; fieldsBox.hidden = false; say('Quote request sent. Our customer service team will get back to you shortly.', 'ok'); }
   $('#qf-send').addEventListener('click', function () {
     var btn = this, file = form.artwork.files[0];
     btn.disabled = true; say('Sending your quote request…');
@@ -130,7 +130,7 @@ window.AP_BLANKS = window.DSS_CATALOG.apparel.models.map(function (m) { return {
       window.location.href = 'mailto:sales@davisonmerch.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
       say('Your email app is opening with your quote request filled in.' + (file ? ' Attach your art file and press send.' : ' Press send to finish.'), 'ok');
     }
-    fetch('/api/quote-request', { method: 'POST', body: new FormData(form) })
+    fetch('/api/quote-request', { method: 'POST', body: (function () { var d = new FormData(form); if (window.davlinSource) d.set('source', window.davlinSource()); return d; })() })
       .then(function (r) { if (r.ok) done(); else emailFallback(); })
       .catch(function () { emailFallback(); })
       .then(function () { btn.disabled = false; });
@@ -451,9 +451,9 @@ window.AP_BLANKS = window.DSS_CATALOG.apparel.models.map(function (m) { return {
     var fl = files(), total = fl.reduce(function (n, f) { return n + f.size; }, 0);
     if (total > 10 * 1024 * 1024) { say('Your files are over 10 MB in total. Remove some or email them to sales@davisonmerch.com.', 'err'); return; }
     btn.disabled = true; say('Sending\u2026');
-    fetch('/api/quote-request', { method: 'POST', body: new FormData(form) })
+    fetch('/api/quote-request', { method: 'POST', body: (function () { var d = new FormData(form); if (window.davlinSource) d.set('source', window.davlinSource()); return d; })() })
       .then(function (r) {
-        if (r.ok) { form.reset(); picked = []; sync(); say('Message sent. Our customer service team will get back to you shortly.', 'ok'); }
+        if (r.ok) { if (window.davlinLead) window.davlinLead(); form.reset(); picked = []; sync(); say('Message sent. Our customer service team will get back to you shortly.', 'ok'); }
         else emailFallback(fl);
       })
       .catch(function () { emailFallback(fl); })

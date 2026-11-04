@@ -91,13 +91,14 @@ async function quoteRequest(req, env) {
   const product = f('product', 30), qty = f('quantity', 10), units = ({ 'Knit beanies': 'units', Apparel: 'pieces' })[product] || 'pairs';
   const rows = talk ? [
     ['Name', name], ['Company or brand', company], ['Email', email], ['Phone', f('phone', 40)], ['Sales rep', rep],
-    ['Timing', f('timing', 60)], ['Estimated quantity', qty], ['Question or idea', clip(fd.get('details'), 3000)]
+    ['Timing', f('timing', 60)], ['Estimated quantity', qty], ['Question or idea', clip(fd.get('details'), 3000)], ['Lead source', f('source', 400)]
   ] : [
     ['Project name', f('project', 120)], ['Brand or company', company], ['Name', name], ['Email', email], ['Phone', f('phone', 40)], ['Sales rep', rep || 'Direct'],
     ['Product', product || 'Socks'], ['Style', f('style', 60)], ['Height', f('height', 20)], ['Quantity', qty ? `${qty} ${units}` : ''],
     ['Design ideas', clip(fd.get('details'), 3000)],
     ['Billing address', addr('bill')], ['Shipping address', f('ship-same', 5) === 'yes' ? 'Same as billing' : [f('ship-name', 100), addr('ship')].filter(Boolean).join(', ')],
-    ['In-hands date', f('inhands', 20)], ['Budget', f('budget', 60)], ['Notes', clip(fd.get('notes'), 3000)]
+    ['In-hands date', f('inhands', 20)], ['Budget', f('budget', 60)], ['Notes', clip(fd.get('notes'), 3000)],
+    ['Lead source', f('source', 400)]
   ];
   rows.push(['Attached files', files.length ? files.map((x) => `${x.filename} (${Math.round(x.size / 1024)} KB)`).join(', ') : 'None']);
   const title = talk ? 'New message for sales' : 'New quote request';
