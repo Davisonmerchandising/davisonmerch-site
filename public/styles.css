@@ -1314,3 +1314,5 @@ section[id] { scroll-margin-top: 230px; }
 .lp-drop.has-files { border-style: solid; border-color: #2f6f6c; }
 .lp-files { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; font-size: .9rem; font-weight: 600; }
 .lp-files li::before { content: "\2713"; color: #2f6f6c; margin-right: 8px; }
+.lp-drop .lp-drop-btn { display: inline-block; margin: 2px 0 4px; padding: 8px 18px; background: #000; color: #fff; font-weight: 700; font-size: .92rem; }
+.lp-drop:hover .lp-drop-btn { background: #2f6f6c; }
