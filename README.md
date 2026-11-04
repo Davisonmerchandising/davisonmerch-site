@@ -1,4 +1,4 @@
-# Davison website (davisonmerch.com)
+# Davlin website (davisonmerch.com)
 
 - Site files live in `public/`.
 - Pushing to `main` deploys automatically to Cloudflare (Worker `davisonmerch`, settings in `wrangler.jsonc`).

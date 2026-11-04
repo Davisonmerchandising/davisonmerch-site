@@ -353,7 +353,7 @@ form .btn { justify-self: start; }
 .cfg-go { margin-top: 6px; width: 100%; min-height: 54px; }
 @media (max-width: 860px) { .cfg-head, .cfg-card { grid-template-columns: 1fr; } }
 
-/* ---------- why brands choose Davison ---------- */
+/* ---------- why brands choose Davlin ---------- */
 .why { padding: clamp(48px, 7vw, 88px) 0 0; }
 .why h2 { font: 400 clamp(2.4rem, 5vw, 4rem)/.95 "Bebas Neue", "Arial Narrow", sans-serif; letter-spacing: .01em; }
 .why ul { margin-top: clamp(20px, 3vw, 36px); display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(10px, 1.6vw, 20px); }
