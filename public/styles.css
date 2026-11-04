@@ -1316,3 +1316,9 @@ section[id] { scroll-margin-top: 230px; }
 .lp-files li::before { content: "\2713"; color: #2f6f6c; margin-right: 8px; }
 .lp-drop .lp-drop-btn { display: inline-block; margin: 2px 0 4px; padding: 8px 18px; background: #000; color: #fff; font-weight: 700; font-size: .92rem; }
 .lp-drop:hover .lp-drop-btn { background: #2f6f6c; }
+/* payment page: same drag and drop box as the landing page */
+.pay-file.lp-drop { position: relative; display: grid; justify-items: center; gap: 4px; text-align: center; padding: 22px 16px; border: 2px dashed #8a9494; background: #f6faf9; cursor: pointer; font-weight: 400; transition: border-color .15s, background .15s; }
+.pay-file.lp-drop em { font-style: normal; font-weight: 700; color: #14613a; }
+.pay-file.lp-drop em:not(:empty)::before { content: "\2713  "; }
+.pay-file.lp-drop:has(em:not(:empty)) { border-style: solid; border-color: #2f6f6c; }
+.pay-file.lp-drop.bad { border-color: #b3261e; border-style: dashed; background: #fdf3f2; }
