@@ -1,4 +1,4 @@
-/* Make payment page. Prices come from script.js (window.DSS_PRICING).
+/* Make payment page. Prices come from script.js (window.DSS_CATALOG).
    The server (src/worker.js) recalculates the price itself,
    so the amount charged never depends on what the browser sends. */
 (function () {

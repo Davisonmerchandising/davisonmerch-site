@@ -138,57 +138,103 @@ window.AP_BLANKS = window.DSS_CATALOG.apparel.models.map(function (m) { return {
 })();
 
 
-/* ---------- Pricing: edit the per-pair price for each quantity tier here ---------- */
+/* ---------- Pricing calculator: socks, knit beanies, t-shirts, hoodies and crews (prices from DSS_CATALOG) ---------- */
 (function () {
   'use strict';
-  var SC = window.DSS_CATALOG.socks;
-  var PRICES = SC.tiers;            // [minimum pairs, price per pair]
-  var CUSTOM_FROM = SC.max + 1;     // this many pairs or more is quoted by a sales rep
-  var EXTRA = {}; SC.models.forEach(function (m) { if (m.extra) EXTRA[m.id] = m.extra; });
-  window.DSS_PRICING = { PRICES: PRICES, CUSTOM_FROM: CUSTOM_FROM, EXTRA: EXTRA }; // the Start order page reads these
-  var type = 'cotton';
+  var C = window.DSS_CATALOG;
   var range = document.getElementById('calc-range'), num = document.getElementById('calc-num');
   if (!range) return;
-  var unitEl = document.getElementById('calc-unit'), totalEl = document.getElementById('calc-total');
-  var MIN = Number(range.min), MAX = Number(range.max);
+  var V = '?v=20261103e';
+  var SOCK_PHOTO = { cotton: 'photos/cotton-1.jpg', performance: 'photos/performance-1.jpg', merino: 'photos/merino-1.jpg', dress: 'photos/dress-1.jpg', sublimation: 'photos/sublimation-1.jpg', dtg: 'photos/dtg-2.jpg' };
+  var SOCK_TAB = { cotton: 'Premium Cotton', performance: 'Performance', merino: 'Merino Wool Blend', dress: 'Dress 200 needle', sublimation: 'Sublimation Print', dtg: 'DTG Print' };
+  var KNIT_PHOTO = { beanie: 'knits/cuffed.jpg', skullcap: 'knits/skullcap.jpg', pom: 'knits/pom.jpg' };
+  var KNIT_TAB = { beanie: 'Cuffed beanie', skullcap: 'Skullcap', pom: 'Pom beanie' };
+  var GROUP_PHOTO = { 'Short sleeve tees': 'apparel/short-sleeve-tee.jpg', 'Long sleeve tees': 'apparel/long-sleeve-tee.jpg', 'Hoodies': 'apparel/hoodie.jpg', 'Crewneck fleece': 'apparel/crewneck.jpg' };
+  // the four product tabs: which catalog product, which style tabs, what the quote form should select
+  var CATS = {
+    socks:   { product: 'socks', quote: 'Socks', tabs: C.socks.models.map(function (m) { return { id: m.id, label: SOCK_TAB[m.id] || m.name, name: m.name, photo: SOCK_PHOTO[m.id] }; }),
+               inc: ['Design and tech pack', 'Free digital proof', 'Free shipping'], hint: 'Pairs per style. 60&ndash;99 pairs are priced at 120% of the 100-pair price.' },
+    beanies: { product: 'beanies', quote: 'Knit beanies', tabs: C.beanies.models.map(function (m) { return { id: m.id, label: KNIT_TAB[m.id] || m.name, name: m.name, photo: KNIT_PHOTO[m.id] }; }),
+               inc: ['Free digital proof', 'Knit-in logo, patch or embroidery', 'Shipping included'], hint: 'Units per style. Same price for all three profiles.' },
+    tees:    { product: 'apparel', quote: 'Apparel', groups: ['Short sleeve tees', 'Long sleeve tees'],
+               inc: ['Two print colors, two locations', 'Standard setup', 'Printed and finished in the USA'], hint: 'Pieces per style. Add $1 per piece for 2XL and up.' },
+    fleece:  { product: 'apparel', quote: 'Apparel', groups: ['Hoodies', 'Crewneck fleece'],
+               inc: ['Two print colors, two locations', 'Standard setup', 'Printed and finished in the USA'], hint: 'Pieces per style. Add $1 per piece for 2XL and up.' }
+  };
+  var tabsBox = document.getElementById('price-tabs'), blankWrap = document.getElementById('price-blank-wrap'), blankSel = document.getElementById('price-blank');
+  var cat = 'socks', tab = 0;
   function money(n) { return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
-  function priceFor(q) { if (q >= CUSTOM_FROM) return null; return window.DSS_UNIT_PRICE('socks', type, q); }
-  window.DSS_PRICE_FOR = priceFor;
-  function clamp(q) { q = Math.round(Number(q)) || MIN; return Math.min(MAX, Math.max(MIN, q)); }
-  function show(q) {
-    var p = priceFor(q);
-    unitEl.textContent = money(p);
-    totalEl.textContent = money(p * q);
-    range.style.setProperty('--fill', ((q - MIN) / (MAX - MIN) * 100) + '%');
+  function cfg() { return CATS[cat]; }
+  function product() { return C[cfg().product]; }
+  function tabList() {
+    var c = cfg();
+    if (c.tabs) return c.tabs;
+    return c.groups.map(function (g) { return { group: g, label: g.replace(/s$/, '').replace('Crewneck fleece', 'Crewneck'), name: g, photo: GROUP_PHOTO[g] }; });
   }
+  function current() { // { id, name, photo }
+    var t = tabList()[tab];
+    if (!t.group) return t;
+    var m = product().models.filter(function (x) { return x.id === blankSel.value; })[0];
+    return { id: m.id, name: m.name, photo: t.photo, group: t.group };
+  }
+  function clamp(q) { var P = product(); q = Math.round(Number(q)) || P.min; return Math.min(P.max, Math.max(P.min, q)); }
+  function show(q) {
+    var P = product(), s = current(), u = window.DSS_UNIT_PRICE(cfg().product, s.id, q);
+    document.getElementById('calc-unit').textContent = money(u);
+    document.getElementById('calc-total').textContent = money(u * q);
+    range.style.setProperty('--fill', ((q - P.min) / (P.max - P.min) * 100) + '%');
+  }
+  function drawTabs() {
+    tabsBox.innerHTML = '';
+    tabList().forEach(function (t, i) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'price-tab' + (i === tab ? ' is-on' : ''); b.textContent = t.label; b.setAttribute('aria-pressed', i === tab);
+      b.addEventListener('click', function () { tab = i; drawTabs(); drawBlanks(); drawStyle(); });
+      tabsBox.appendChild(b);
+    });
+  }
+  function drawBlanks() {
+    var t = tabList()[tab];
+    blankWrap.hidden = !t.group;
+    if (!t.group) return;
+    blankSel.innerHTML = product().models.filter(function (m) { return m.group === t.group; })
+      .map(function (m) { return '<option value="' + m.id + '">' + m.name + ' \u2013 ' + money(m.price) + '</option>'; }).join('');
+  }
+  function drawStyle() {
+    var s = current();
+    var img = document.getElementById('calc-photo'); img.src = 'images/' + s.photo + V; img.alt = s.name + ' example';
+    document.getElementById('tier-photo-name').textContent = s.group ? s.group : s.name;
+    show(clamp(num.value));
+  }
+  function setCat(k) {
+    cat = k; tab = 0;
+    Array.prototype.forEach.call(document.querySelectorAll('.price-cat'), function (b) { var on = b.getAttribute('data-cat') === k; b.classList.toggle('is-on', on); b.setAttribute('aria-selected', on); });
+    var P = product();
+    range.min = num.min = P.min; range.max = num.max = P.max;
+    document.getElementById('calc-min').textContent = P.min.toLocaleString('en-US');
+    document.getElementById('calc-max').textContent = P.max.toLocaleString('en-US');
+    document.getElementById('calc-hint').innerHTML = cfg().hint;
+    document.getElementById('calc-unit-lbl').textContent = 'Price per ' + P.one;
+    document.getElementById('calc-inc').innerHTML = cfg().inc.map(function (x) { return '<li>' + x + '</li>'; }).join('');
+    var q = Math.max(P.min, Math.min(P.max, Number(num.value) || 500)); num.value = q; range.value = q;
+    drawTabs(); drawBlanks(); drawStyle();
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.price-cat'), function (b) { b.addEventListener('click', function () { setCat(b.getAttribute('data-cat')); }); });
+  blankSel.addEventListener('change', drawStyle);
   range.addEventListener('input', function () { num.value = range.value; show(Number(range.value)); });
   num.addEventListener('input', function () { if (num.value === '') return; var q = clamp(num.value); range.value = q; show(q); });
   num.addEventListener('change', function () { var q = clamp(num.value); num.value = q; range.value = q; show(q); });
+  // "Get your custom quote": carry product, style and quantity into the quote form
   document.getElementById('calc-go').addEventListener('click', function () {
-    var f = document.getElementById('f-qty'); if (f) f.value = clamp(num.value);
-    var s = document.getElementById('f-style'); if (s) s.value = typeName;
+    var c = cfg(), s = current(), q = clamp(num.value);
+    var radio = document.querySelector('#f-product input[value="' + c.quote + '"]');
+    if (radio && !radio.checked) { radio.checked = true; radio.dispatchEvent(new Event('change', { bubbles: true })); }
+    setTimeout(function () {
+      var f = document.getElementById('f-qty'); if (f) f.value = q;
+      var sel = document.getElementById('f-style'); if (sel) sel.value = s.group || s.name;
+      var d = document.querySelector('#quote-form textarea[name="details"]'); if (d && s.group && !d.value) d.value = 'Blank: ' + s.name + '. ';
+    }, 0);
   });
-  function showTiers() {
-    Array.prototype.forEach.call(document.querySelectorAll('[data-tier-price]'), function (el) {
-      el.textContent = money(priceFor(Number(el.getAttribute('data-tier-price'))));
-    });
-  }
-  var tabs = Array.prototype.slice.call(document.querySelectorAll('.price-tab')), typeName = 'Premium Cotton Socks';
-  var pick = document.getElementById('tier-type'), photos = Array.prototype.slice.call(document.querySelectorAll('.tier-photo')), photoName = document.getElementById('tier-photo-name');
-  function setType(t) {
-    var tab = tabs.filter(function (x) { return x.getAttribute('data-type') === t; })[0]; if (!tab) return;
-    type = t; typeName = tab.getAttribute('data-name');
-    tabs.forEach(function (x) { x.classList.toggle('is-on', x === tab); x.setAttribute('aria-pressed', x === tab); });
-    document.getElementById('price-for').textContent = typeName;
-    if (pick) pick.value = t;
-    photos.forEach(function (p) { p.hidden = p.getAttribute('data-type') !== t; });
-    if (photoName) photoName.textContent = typeName;
-    showTiers(); show(clamp(num.value));
-  }
-  tabs.forEach(function (tab) { tab.addEventListener('click', function () { setType(tab.getAttribute('data-type')); }); });
-  if (pick) pick.addEventListener('change', function () { setType(pick.value); });
-  showTiers();
-  show(clamp(range.value));
+  setCat('socks');
 })();
 
 
@@ -497,7 +543,7 @@ window.AP_BLANKS = window.DSS_CATALOG.apparel.models.map(function (m) { return {
   Array.prototype.forEach.call(form.querySelectorAll('input[name="product"]'), function (r) { r.addEventListener('change', function () { setProduct(r.value); }); });
   // sock links (product pages, pricing calculator) always switch the form back to socks first
   document.addEventListener('click', function (e) {
-    var t = e.target.closest && e.target.closest('[data-style], #calc-go'); if (t && cur() !== 'Socks') setProduct('Socks');
+    var t = e.target.closest && e.target.closest('[data-style]'); if (t && cur() !== 'Socks') setProduct('Socks');
   }, true);
   form.addEventListener('reset', function () { setTimeout(function () { setProduct('Socks'); }, 0); });
   var m = /[?&]product=(socks|beanies|apparel)/i.exec(location.search);
