@@ -1215,3 +1215,7 @@ section[id] { scroll-margin-top: 230px; }
   .util-row::-webkit-scrollbar { display: none; }
 }
 .price-cat img, .price-cat.is-on img { background: transparent; mix-blend-mode: normal; object-fit: contain; }
+/* header logo 135% larger */
+.bar-logo img { height: 169px; }
+@media (min-width: 1141px) { .bar-logo img { height: 147px; } }
+@media (max-width: 760px) { .bar-logo img { height: 78px; } }
