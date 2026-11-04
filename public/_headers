@@ -2,3 +2,5 @@
   Cache-Control: no-cache
 /
   Cache-Control: no-cache
+/images/*
+  Cache-Control: public, max-age=3600, must-revalidate
