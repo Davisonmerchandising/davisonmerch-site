@@ -3,4 +3,4 @@ Allow: /
 Disallow: /pay
 Disallow: /pay.html
 
-Sitemap: https://davisonmerch.com/sitemap.xml
+Sitemap: https://davlinmerch.com/sitemap.xml
