@@ -153,7 +153,7 @@ window.AP_BLANKS = window.DSS_CATALOG.apparel.models.map(function (m) { return {
   // the four product tabs: which catalog product, which style tabs, what the quote form should select
   var CATS = {
     socks:   { product: 'socks', quote: 'Socks', tabs: C.socks.models.map(function (m) { return { id: m.id, label: SOCK_TAB[m.id] || m.name, name: m.name, photo: SOCK_PHOTO[m.id] }; }),
-               inc: ['Design and tech pack', 'Free digital proof', 'Free shipping'], hint: 'Pairs per style. 60&ndash;99 pairs are priced at 120% of the 100-pair price.' },
+               inc: ['Design and tech pack', 'Free digital proof', 'Free shipping'], hint: 'Pairs per style.' },
     beanies: { product: 'beanies', quote: 'Knit beanies', tabs: C.beanies.models.map(function (m) { return { id: m.id, label: KNIT_TAB[m.id] || m.name, name: m.name, photo: KNIT_PHOTO[m.id] }; }),
                inc: ['Free digital proof', 'Knit-in logo, patch or embroidery', 'Shipping included'], hint: 'Units per style. Same price for all three profiles.' },
     tees:    { product: 'apparel', quote: 'Apparel', groups: ['Short sleeve tees', 'Long sleeve tees'],
