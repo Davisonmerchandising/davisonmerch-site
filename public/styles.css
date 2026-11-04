@@ -1346,3 +1346,16 @@ section[id] { scroll-margin-top: 230px; }
 }
 .occ-grid article .ph { height: 100%; aspect-ratio: auto; }
 @media (max-width: 760px) { .occ-grid h3 { font-size: 1.15rem; left: 8px; bottom: 8px; padding: 6px 8px 3px; } }
+/* landing page: pricing tabs + five callouts */
+.lp-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.lp-tabs button { font: 600 .92rem/1 "Archivo", Arial, sans-serif; padding: 11px 16px; border: 1.5px solid #000; background: #fff; color: #000; cursor: pointer; border-radius: 0; }
+.lp-tabs button:hover { background: var(--brand-20); }
+.lp-tabs button[aria-selected="true"] { background: var(--brand); border-color: var(--brand); color: #fff; }
+.lp-tabs button:focus-visible { outline: 3px solid #000; outline-offset: 2px; }
+.lp-tabs + .lp-sub { margin-top: 16px; }
+.lp-trust ul { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+@media (max-width: 900px) { .lp-trust ul { grid-template-columns: 1fr 1fr; } .lp-trust li:last-child { grid-column: 1 / -1; } }
+@media (max-width: 560px) { .lp-tabs { flex-wrap: nowrap; overflow-x: auto; margin-left: -16px; margin-right: -16px; padding: 0 16px 4px; scrollbar-width: none; } .lp-tabs button { flex: 0 0 auto; } }
+.lp-trust li { align-content: start; }
+.lp-trust b { font-size: clamp(1.3rem, 1.8vw, 1.65rem); }
+@media (min-width: 1200px) { .lp-trust b { white-space: nowrap; font-size: 1.55rem; } }

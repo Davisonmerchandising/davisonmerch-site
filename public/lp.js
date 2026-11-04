@@ -5,6 +5,36 @@
   var msg = document.getElementById('lp-msg'), btn = document.getElementById('lp-send'), styleSel = document.getElementById('lp-style');
   function say(t, kind) { msg.textContent = t; msg.className = 'lp-msg lp-wide' + (kind ? ' is-' + kind : ''); }
 
+
+  // pricing tabs: per-pair price by sock model (must match DSS_CATALOG in script.js)
+  var TIERS = [[60, '60&ndash;99'], [100, '100&ndash;249'], [250, '250&ndash;499'], [500, '500&ndash;999'], [1000, '1,000&ndash;1,999'], [2000, '2,000+']];
+  var BASE = { 100: 7.95, 250: 7.25, 500: 6.95, 1000: 6.25, 2000: 5.95 };
+  var MODELS = {
+    cotton: { name: 'Premium Cotton', label: 'Premium cotton crew socks', extra: 0 },
+    performance: { name: 'Performance', label: 'Performance crew socks with cushioned zones', extra: 1.5 },
+    merino: { name: 'Merino Wool Blend', label: 'Merino wool blend crew socks', extra: 2 },
+    dress: { name: 'Dress 200 Needle', label: 'Dress 200 needle socks', extra: 0 },
+    sublimation: { name: 'Sublimation Print', label: 'Sublimation print crew socks', extra: 0 },
+    dtg: { name: 'DTG Print', label: 'DTG print crew socks', extra: 0 }
+  };
+  var tabs = document.getElementById('lp-tabs'), tbody = document.getElementById('lp-tiers');
+  function price(m, q) { var p = BASE[q < 100 ? 100 : q] + m.extra; if (q < 100) p *= 1.2; return '$' + p.toFixed(2); }
+  function showModel(id) {
+    var m = MODELS[id]; if (!m || !tbody) return;
+    tbody.innerHTML = TIERS.map(function (t, i) { return '<tr' + (i === TIERS.length - 1 ? ' class="is-best"' : '') + '><td>' + t[1] + '</td><td>' + price(m, t[0]) + '</td></tr>'; }).join('');
+    document.getElementById('lp-price-sub').textContent = m.label + '. Design and tech pack, digital proof and shipping included.';
+    document.getElementById('lp-price-go').setAttribute('data-style', m.name);
+    Array.prototype.forEach.call(tabs.querySelectorAll('button'), function (b) { b.setAttribute('aria-selected', String(b.getAttribute('data-m') === id)); });
+  }
+  if (tabs) {
+    tabs.addEventListener('click', function (e) { var b = e.target.closest('button[data-m]'); if (b) showModel(b.getAttribute('data-m')); });
+    tabs.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      var bs = Array.prototype.slice.call(tabs.querySelectorAll('button')), i = bs.indexOf(document.activeElement); if (i < 0) return;
+      var n = bs[(i + (e.key === 'ArrowRight' ? 1 : bs.length - 1)) % bs.length]; n.focus(); n.click();
+    });
+  }
+
   // clicking a style card picks it in the form
   Array.prototype.forEach.call(document.querySelectorAll('[data-style]'), function (a) {
     a.addEventListener('click', function () { styleSel.value = a.getAttribute('data-style'); });
