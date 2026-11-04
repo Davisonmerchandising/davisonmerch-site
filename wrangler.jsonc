@@ -6,10 +6,11 @@
   "assets": {
     "directory": "./public",
     "binding": "ASSETS",
-    "run_worker_first": ["/api/*"],
+    "run_worker_first": true,
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "404-page"
   },
+  // Worker runs before every page so the redirect below applies to pages too, not just /api/.
   // Main domain. Visitors to any other domain on this site (davisonmerch.com, www, davlinsupply.com)
   // are sent here with a permanent (301) redirect. API calls and *.workers.dev are left alone.
   "vars": {
