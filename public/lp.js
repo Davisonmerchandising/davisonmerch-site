@@ -56,7 +56,7 @@
   }
 
   // remember the visitor came from this page, so style pages can link back
-  try { sessionStorage.setItem('davlin_lp', '1'); } catch (e) {}
+  try { sessionStorage.setItem('davlin_lp', /school-socks/.test(location.pathname) ? 'school-socks.html' : 'custom-socks.html'); } catch (e) {}
   // ?style=... (from a style page) picks that style
   try { var ps = new URLSearchParams(location.search).get('style'); if (ps) Array.prototype.forEach.call(styleSel.options, function (o) { if (o.value && ps.toLowerCase().indexOf(o.value.split(' ')[0].toLowerCase()) === 0) styleSel.value = o.value; }); } catch (e) {}
 

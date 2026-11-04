@@ -144,7 +144,7 @@ window.AP_BLANKS = window.DSS_CATALOG.apparel.models.map(function (m) { return {
   var C = window.DSS_CATALOG;
   var range = document.getElementById('calc-range'), num = document.getElementById('calc-num');
   if (!range) return;
-  var V = '?v=20261104i';
+  var V = '?v=20261104j';
   var SOCK_PHOTO = { cotton: 'photos/cotton-1.jpg', performance: 'photos/performance-1.jpg', merino: 'photos/merino-1.jpg', dress: 'photos/dress-1.jpg', sublimation: 'photos/sublimation-1.jpg', dtg: 'photos/dtg-2.jpg' };
   var SOCK_TAB = { cotton: 'Premium Cotton', performance: 'Performance', merino: 'Merino Wool Blend', dress: 'Dress 200 needle', sublimation: 'Sublimation Print', dtg: 'DTG Print' };
   var KNIT_PHOTO = { beanie: 'knits/cuffed.jpg', skullcap: 'knits/skullcap.jpg', pom: 'knits/pom.jpg' };
@@ -604,16 +604,16 @@ window.DSS_REPS = [
 /* ---------- visitors from the custom socks landing page: link back, and send quote buttons to its short form ---------- */
 (function () {
   'use strict';
-  var fromLp = false;
-  try { fromLp = sessionStorage.getItem('davlin_lp') === '1'; } catch (e) {}
+  var fromLp = false, lp = 'custom-socks.html';
+  try { var v = sessionStorage.getItem('davlin_lp'); fromLp = !!v; if (v === 'school-socks.html') lp = v; } catch (e) {}
   if (!fromLp || !/\/socks-[a-z]+(\.html)?$/.test(location.pathname)) return;
   Array.prototype.forEach.call(document.querySelectorAll('a[href^="index.html"][href$="#quote"]'), function (a) {
     var m = a.getAttribute('href').match(/[?&]style=([^#&]+)/);
-    a.setAttribute('href', 'custom-socks.html' + (m ? '?style=' + m[1] : '') + '#quote');
+    a.setAttribute('href', lp + (m ? '?style=' + m[1] : '') + '#quote');
   });
   var bar = document.getElementById('bar'); if (!bar) return;
   var back = document.createElement('div');
   back.className = 'lp-back';
-  back.innerHTML = '<div class="wrap"><a href="custom-socks.html#styles">&larr; Back to all custom sock styles</a><a class="lp-back-cta" href="' + (document.querySelector('a[href^="custom-socks.html?style="]') || document.querySelector('a[href^="custom-socks.html"][href$="#quote"]') || { getAttribute: function () { return 'custom-socks.html#quote'; } }).getAttribute('href') + '">Get a free quote</a></div>';
+  back.innerHTML = '<div class="wrap"><a href="' + lp + '#styles">&larr; Back to all ' + (lp === 'school-socks.html' ? 'team' : 'custom') + ' sock styles</a><a class="lp-back-cta" href="' + (document.querySelector('a[href^="' + lp + '?style="]') || document.querySelector('a[href^="' + lp + '"][href$="#quote"]') || { getAttribute: function () { return lp + '#quote'; } }).getAttribute('href') + '">Get a free quote</a></div>';
   bar.parentNode.insertBefore(back, bar.nextSibling);
 })();

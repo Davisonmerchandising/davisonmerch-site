@@ -1359,3 +1359,18 @@ section[id] { scroll-margin-top: 230px; }
 .lp-trust li { align-content: start; }
 .lp-trust b { font-size: clamp(1.3rem, 1.8vw, 1.65rem); }
 @media (min-width: 1200px) { .lp-trust b { white-space: nowrap; font-size: 1.55rem; } }
+/* school & team socks page */
+.sch-uses { padding: clamp(40px, 6vw, 80px) 0 0; }
+.sch-grid { list-style: none; padding: 0; margin: clamp(18px, 3vw, 28px) 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(8px, 1.4vw, 16px); }
+.sch-grid li { background: var(--brand); color: #fff; padding: clamp(18px, 2.4vw, 28px); display: grid; gap: 6px; align-content: start; }
+.sch-grid b { font: 400 clamp(1.5rem, 2.4vw, 2rem)/1 "Bebas Neue", "Arial Narrow", sans-serif; letter-spacing: .02em; }
+.sch-grid span { font-weight: 300; line-height: 1.45; color: #e8f2f5; }
+.sch-fund { padding: clamp(40px, 6vw, 80px) 0; background: var(--brand-20); margin-top: clamp(40px, 6vw, 80px); }
+.sch-fund-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: clamp(24px, 4vw, 64px); align-items: center; }
+.sch-fund .lp-table { background: #fff; }
+.sch-table td + td, .sch-table th + th { text-align: right; }
+.sch-table td:nth-child(2), .sch-table td:nth-child(3) { font-weight: 400; }
+.sch-fund-img { margin: 0; background: #fff; }
+.sch-fund-img img { width: 100%; height: auto; }
+@media (max-width: 900px) { .sch-grid { grid-template-columns: 1fr 1fr; } .sch-fund-grid { grid-template-columns: 1fr; } .sch-fund-img { max-width: 420px; } }
+@media (max-width: 560px) { .sch-grid { grid-template-columns: 1fr; } .sch-table { font-size: .92rem; } .sch-table th, .sch-table td { padding: 10px 6px; } .sch-table th { font-size: .66rem; letter-spacing: .06em; } }
