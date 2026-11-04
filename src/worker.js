@@ -8,10 +8,10 @@
 //   STRIPE_PUBLISHABLE_KEY  pk_test_... (test) or pk_live_... (live)
 //   STRIPE_SECRET_KEY       sk_test_... or sk_live_...   (type it in Cloudflare only, as a Secret)
 //   STRIPE_WEBHOOK_SECRET   whsec_... from the Stripe webhook endpoint
-//   RESEND_API_KEY          re_... from resend.com (davisonmerch.com verified there)
+//   RESEND_API_KEY          re_... from resend.com (davlinmerch.com verified there as the sending domain)
 //   PRIMARY_HOST            davlinmerch.com (redirects davisonmerch.com and www. there)
 //   NOTIFY_EMAIL            optional, default sales@davisonmerch.com
-//   FROM_EMAIL              optional, default "Davlin Merch <website@davisonmerch.com>"
+//   FROM_EMAIL              optional, default "Davlin Merch <website@davlinmerch.com>"
 
 // Products and prices. Must match window.DSS_CATALOG at the top of public/script.js.
 const CATALOG = {"socks": {"label": "Socks", "unit": "pairs", "one": "pair", "min": 60, "max": 4999, "crew": true, "tiers": [[100, 7.95], [250, 7.25], [500, 6.95], [1000, 6.25], [2000, 5.95]], "models": [{"id": "cotton", "name": "Premium Cotton Socks"}, {"id": "performance", "name": "Performance Socks", "extra": 1.5}, {"id": "merino", "name": "Merino Wool Blend Socks", "extra": 2.0}, {"id": "dress", "name": "Dress Socks 200 Needle"}, {"id": "sublimation", "name": "Sublimation Print Socks"}, {"id": "dtg", "name": "DTG Print Socks"}], "small": {"below": 100, "mult": 1.2}}, "beanies": {"label": "Knit beanies", "unit": "units", "one": "unit", "min": 100, "max": 9999, "tiers": [[100, 12.0]], "models": [{"id": "beanie", "name": "Knit Beanie (cuffed)"}, {"id": "skullcap", "name": "Skullcap (cuffless)"}, {"id": "pom", "name": "Pom Beanie"}]}, "apparel": {"label": "T-shirts and apparel", "unit": "pieces", "one": "piece", "min": 144, "max": 9999, "models": [{"id": "ap0", "name": "Gildan G5000 · Short sleeve tee", "group": "Short sleeve tees", "price": 11.25}, {"id": "ap1", "name": "Optima 47265 · Logan Box short sleeve tee", "group": "Short sleeve tees", "price": 11.7}, {"id": "ap2", "name": "Cotton Collective 7.5 oz · Heavyweight box tee", "group": "Short sleeve tees", "price": 15.75}, {"id": "ap3", "name": "Comfort Colors 1717 · Short sleeve tee", "group": "Short sleeve tees", "price": 16.2}, {"id": "ap4", "name": "Optima 47356 · Montage long sleeve tee", "group": "Long sleeve tees", "price": 13.05}, {"id": "ap5", "name": "Gildan G5400 · Long sleeve tee", "group": "Long sleeve tees", "price": 15.75}, {"id": "ap6", "name": "Cotton Collective 7.5 oz · Heavyweight long sleeve box tee", "group": "Long sleeve tees", "price": 18.45}, {"id": "ap7", "name": "Comfort Colors 6014 · Long sleeve tee", "group": "Long sleeve tees", "price": 24.75}, {"id": "ap8", "name": "Independent Trading SS3000 · Lightweight crew", "group": "Crewneck fleece", "price": 21.6}, {"id": "ap9", "name": "Independent Trading IND3000 · Heavyweight crew", "group": "Crewneck fleece", "price": 27.9}, {"id": "ap10", "name": "Cotton Collective 17 oz · Heavyweight box crew", "group": "Crewneck fleece", "price": 40.95}, {"id": "ap11", "name": "Independent Trading SS4500 · 8.5 oz. Midweight Pullover Hood", "group": "Hoodies", "price": 23.4}, {"id": "ap12", "name": "Independent Trading IND4000 · Heavyweight hoodie", "group": "Hoodies", "price": 32.4}, {"id": "ap13", "name": "Cotton Collective 11 oz · Special hoodie", "group": "Hoodies", "price": 45.45}]}};
@@ -57,7 +57,7 @@ function b64(bytes) {
 async function sendEmail(env, { subject, html, text, replyTo, attachments = [] }) {
   if (!env.RESEND_API_KEY) throw new Error('RESEND_API_KEY is not set');
   const body = {
-    from: env.FROM_EMAIL || 'Davlin Merch <website@davisonmerch.com>', to: [env.NOTIFY_EMAIL || 'sales@davisonmerch.com'],
+    from: env.FROM_EMAIL || 'Davlin Merch <website@davlinmerch.com>', to: [env.NOTIFY_EMAIL || 'sales@davisonmerch.com'],
     subject: subject.slice(0, 250), html, text,
     attachments: attachments.filter((a) => a && a.content).map((a) => ({ filename: a.filename || 'attachment', content: b64(a.content) }))
   };
